@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Student Management System</title>
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Student Management System</h1>
+
+<div class="dashboard">
+
+<div class="card">
+<h3> Total Students</h3>
+<h2>{{ total }}</h2>
+</div>
+
+<div class="card">
+<h3> Departments</h3>
+<h2>{{ departments }}</h2>
+</div>
+
+<div class="card">
+<h3> Average CGPA</h3>
+<h2>{{ avg }}</h2>
+</div>
+
+</div>
+
+
+<div class="form-section">
+
+{% if edit_student %}
+
+<h2>Edit Student</h2>
+
+<form
+action="/update/{{ edit_student.roll }}"
+method="POST">
+
+<input
+type="text"
+name="name"
+value="{{ edit_student.name }}"
+required>
+
+<input
+type="text"
+value="{{ edit_student.roll }}"
+disabled>
+
+<input
+type="text"
+name="department"
+value="{{ edit_student.department }}"
+required>
+
+<input
+type="number"
+step="0.01"
+name="cgpa"
+value="{{ edit_student.cgpa }}"
+required>
+
+<button type="submit">
+Update Student
+</button>
+
+</form>
+
+{% else %}
+
+<h2>Add Student</h2>
+
+<form action="/add" method="POST">
+
+<input
+type="text"
+name="name"
+placeholder="Student Name"
+required>
+
+<input
+type="text"
+name="roll"
+placeholder="Roll Number"
+required>
+
+<input
+type="text"
+name="department"
+placeholder="Department"
+required>
+
+<input
+type="number"
+step="0.01"
+name="cgpa"
+placeholder="CGPA"
+required>
+
+<button type="submit">
+Add Student
+</button>
+
+</form>
+
+{% endif %}
+
+</div>
+
+
+<div class="table-section">
+
+<h2>Student List</h2>
+
+<form method="GET">
+
+<input
+class="search"
+type="text"
+name="search"
+placeholder="Search Student"
+value="{{ search }}">
+
+<button type="submit">
+Search
+</button>
+
+</form>
+
+<table>
+
+<tr>
+<th>Roll</th>
+<th>Name</th>
+<th>Department</th>
+<th>CGPA</th>
+<th>Action</th>
+</tr>
+
+{% if students %}
+
+{% for student in students %}
+
+<tr>
+
+<td>{{ student.roll }}</td>
+<td>{{ student.name }}</td>
+<td>{{ student.department }}</td>
+<td>{{ student.cgpa }}</td>
+
+<td>
+
+<a href="/edit/{{ student.roll }}">
+Edit
+</a>
+
+|
+
+<a
+href="/delete/{{ student.roll }}"
+onclick="return confirm('Delete this student?')">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+{% else %}
+
+<tr>
+<td colspan="5">
+No students found.
+</td>
+</tr>
+
+{% endif %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>
+```
